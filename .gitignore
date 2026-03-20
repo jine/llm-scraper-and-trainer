@@ -1,0 +1,6 @@
+trainer/data
+trainer/models
+scraper/output
+output
+*__pycache__*
+*unsloth_compiled_cache*
