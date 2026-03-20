@@ -88,7 +88,7 @@ Options:
 
 ## Notes
 
-- Training on ~24k examples takes ~15-20 hours on RTX 3060 Ti
+- Training on ~12k examples takes ~1h 45min on RTX 3060 Ti (~2 it/s)
 - Adapter is small (~20MB) — easy to share or swap
 - Llama-3.1-8B with 4-bit quantization fits in ~5.4GB VRAM
 - Uses Unsloth for 2x training speedup and efficient memory usage
