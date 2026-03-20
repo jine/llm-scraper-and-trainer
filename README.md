@@ -89,4 +89,4 @@ python generate.py --adapter output/adapter --category "Category" --title "Optio
 | `--max-length` | 512 | Max sequence length |
 | `--lora-r` | 8 | LoRA rank |
 
-See `scraper/README.md` and `trainer/README.md` for detailed documentation.
+See [scraper/README.md](scraper/README.md) and [trainer/README.md](trainer/README.md) for detailed documentation.
