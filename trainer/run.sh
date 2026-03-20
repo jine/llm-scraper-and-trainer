@@ -15,7 +15,7 @@ echo "Installing dependencies..."
 pip install -q -r requirements.txt
 
 # 3. Check if model is downloaded
-MODEL_DIR="models/unsloth--Meta-Llama-3.1-8B-Instruct-bnb-4bit"
+MODEL_DIR="models/unsloth--Llama-3.2-1B-Instruct-bnb-4bit"
 if [ ! -d "$MODEL_DIR" ]; then
     echo "Model not found locally, downloading..."
     python download.py
