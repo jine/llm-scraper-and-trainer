@@ -1,8 +1,8 @@
 # LLM Style Trainer
 
-Fine-tune Llama-3.1-8B on Swedish text data using QLoRA to learn writing style from scraped content. Runs on consumer GPUs (8GB+ VRAM).
+Fine-tune Llama-3.2-1B on Swedish text data using QLoRA to learn writing style from scraped content. Runs on consumer GPUs (8GB+ VRAM).
 
-Model: [unsloth/Meta-Llama-3.1-8B-Instruct-bnb-4bit](https://huggingface.co/unsloth/Meta-Llama-3.1-8B-Instruct-bnb-4bit)
+Model: [unsloth/Llama-3.2-1B-Instruct-bnb-4bit](https://huggingface.co/unsloth/Llama-3.2-1B-Instruct-bnb-4bit)
 
 ## Setup
 
@@ -21,18 +21,18 @@ Requires Python 3.10+ and a CUDA-capable NVIDIA GPU with 8+ GB VRAM.
 
 ### 0. Download Model
 
-Download the base model locally (~4.5GB):
+Download the base model locally (~1.5GB):
 
 ```bash
 python download.py
 ```
 
-This saves to `models/unsloth--Meta-Llama-3.1-8B-Instruct-bnb-4bit/`. You can then use the local path instead of downloading on each run.
+This saves to `models/unsloth--Llama-3.2-1B-Instruct-bnb-4bit/`. You can then use the local path instead of downloading on each run.
 
 Options:
 | Flag | Default | Description |
 |------|---------|-------------|
-| `--model` | unsloth/Meta-Llama-3.1-8B-Instruct-bnb-4bit | HuggingFace model ID |
+| `--model` | unsloth/Llama-3.2-1B-Instruct-bnb-4bit | HuggingFace model ID |
 | `--output` | models | Download directory |
 
 ### 1. Prepare Data
@@ -54,13 +54,13 @@ Fine-tune with QLoRA via Unsloth:
 python train.py --data data/train.jsonl --output output/adapter
 
 # From local download
-python train.py --base-model models/unsloth--Meta-Llama-3.1-8B-Instruct-bnb-4bit --data data/train.jsonl --output output/adapter
+python train.py --base-model models/unsloth--Llama-3.2-1B-Instruct-bnb-4bit --data data/train.jsonl --output output/adapter
 ```
 
 Options:
 | Flag | Default | Description |
 |------|---------|-------------|
-| `--base-model` | unsloth/Meta-Llama-3.1-8B-Instruct-bnb-4bit | Base model name or path |
+| `--base-model` | unsloth/Llama-3.2-1B-Instruct-bnb-4bit | Base model name or path |
 | `--epochs` | 1 | Training epochs |
 | `--batch-size` | 1 | Per-device batch size |
 | `--lr` | 2e-4 | Learning rate |
@@ -68,18 +68,39 @@ Options:
 | `--lora-r` | 8 | LoRA rank |
 | `--lora-alpha` | 16 | LoRA alpha |
 
-### 3. Generate
+### 3. Merge
 
-Generate text using the fine-tuned model:
+Merge the trained adapter with the base model for faster inference:
 
 ```bash
-python generate.py --adapter output/adapter --category "Noveller" --title "En kort berättelse"
+python merge.py
 ```
 
 Options:
 | Flag | Default | Description |
 |------|---------|-------------|
-| `--base-model` | unsloth/Meta-Llama-3.1-8B-Instruct-bnb-4bit | Base model name or path |
+| `--method` | merged_4bit | Merge method: `merged_4bit` (~1.5GB) or `merged_16bit` (~2.5GB) |
+| `--adapter` | output/adapter | Path to trained adapter |
+| `--output` | output/merged_model | Output directory |
+
+### 4. Generate
+
+Generate text using the fine-tuned model:
+
+```bash
+# Using merged model (recommended)
+python generate.py --model output/merged_model --category "Noveller"
+
+# Using adapter (loads base model separately)
+python generate.py --model output/adapter --mode adapter --category "Noveller"
+```
+
+Options:
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--model` | output/merged_model | Path to merged model or adapter |
+| `--mode` | merged | Load as `merged` or `adapter` |
+| `--base-model` | unsloth/Llama-3.2-1B-Instruct-bnb-4bit | Base model (for adapter mode) |
 | `--category` | (required) | Category to generate for |
 | `--title` | | Optional title prompt |
 | `--max-tokens` | 512 | Max tokens to generate |
@@ -89,6 +110,7 @@ Options:
 ## Notes
 
 - Training on ~12k examples takes ~1h 45min on RTX 3060 Ti (~2 it/s)
-- Adapter is small (~20MB) — easy to share or swap
-- Llama-3.1-8B with 4-bit quantization fits in ~5.4GB VRAM
+- Adapter is small (~22MB) — easy to share or swap
+- Merged model is ~1.5GB with 4bit quantization, ~2.5GB at 16bit
+- Llama-3.2-1B with 4-bit quantization fits in ~2-3GB VRAM for inference
 - Uses Unsloth for 2x training speedup and efficient memory usage
