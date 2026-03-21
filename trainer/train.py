@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""QLoRA fine-tuning of Llama-3.1-8B with Unsloth for Swedish text data."""
+"""QLoRA fine-tuning of Llama-3.2-1B with Unsloth for Swedish text data."""
 
 import os
 
@@ -45,12 +45,12 @@ def format_chat(example: dict) -> str:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Fine-tune Llama-3.1-8B with Unsloth QLoRA"
+        description="Fine-tune Llama-3.2-1B with Unsloth QLoRA"
     )
     parser.add_argument(
         "--base-model",
-        default="unsloth/Meta-Llama-3.1-8B-Instruct-bnb-4bit",
-        help="Base model name or path (default: unsloth/Meta-Llama-3.1-8B-Instruct-bnb-4bit)",
+        default="unsloth/Llama-3.2-1B-Instruct-bnb-4bit",
+        help="Base model name or path (default: unsloth/Llama-3.2-1B-Instruct-bnb-4bit)",
     )
     parser.add_argument(
         "--data", default="trainer/data/train.jsonl", help="Training data JSONL"

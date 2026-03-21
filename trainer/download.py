@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Download Llama-3.1-8B-Instruct model locally."""
+"""Download Llama-3.2-1B-Instruct model locally."""
 
 import argparse
 import os
@@ -12,11 +12,11 @@ load_dotenv()
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Download Llama-3.1-8B-Instruct model")
+    parser = argparse.ArgumentParser(description="Download Llama-3.2-1B-Instruct model")
     parser.add_argument(
         "--model",
-        default="unsloth/Meta-Llama-3.1-8B-Instruct-bnb-4bit",
-        help="Model name on HuggingFace (default: unsloth/Meta-Llama-3.1-8B-Instruct-bnb-4bit)",
+        default="unsloth/Llama-3.2-1B-Instruct-bnb-4bit",
+        help="Model name on HuggingFace (default: unsloth/Llama-3.2-1B-Instruct-bnb-4bit)",
     )
     parser.add_argument(
         "--output",
@@ -35,7 +35,7 @@ def main():
     local_dir = output_dir / model_name
 
     print(f"Downloading {args.model} to {local_dir}")
-    print("This may take a while (~4.5GB)...\n")
+    print("This may take a while (~1.5GB)...\n")
 
     token = os.environ.get("HUGGINGFACE_TOKEN")
     if token:
