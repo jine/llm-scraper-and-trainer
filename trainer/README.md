@@ -70,17 +70,22 @@ Options:
 
 ### 3. Generate
 
-Generate text using the fine-tuned model:
+#### Fine-tuned model (with adapter)
 
 ```bash
 python generate.py --model output/adapter --category "Noveller" --title "En kort berättelse"
 ```
 
-Options:
+#### Base model (no adapter, for comparison)
+
+```bash
+python generate_base.py --category "Noveller" --title "En kort berättelse"
+```
+
+Options (both scripts):
 | Flag | Default | Description |
 |------|---------|-------------|
-| `--base-model` | unsloth/Llama-3.2-1B-Instruct-bnb-4bit | Base model name |
-| `--model` | output/adapter | Path to LoRA adapter |
+| `--model` | output/adapter (or base model for generate_base.py) | Model or adapter path |
 | `--category` | (required) | Category to generate for |
 | `--title` | | Optional title prompt |
 | `--max-tokens` | 512 | Max tokens to generate |
@@ -88,7 +93,6 @@ Options:
 | `--top-p` | 0.9 | Top-p sampling |
 | `--top-k` | 50 | Top-k sampling |
 | `--repetition-penalty` | 1.2 | Repetition penalty (1.0 = disabled) |
-| `--no-repeat-ngram` | 3 | No-repeat ngram size (0 = disabled) |
 
 ## Notes
 
