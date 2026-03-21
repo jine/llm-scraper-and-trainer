@@ -35,9 +35,9 @@ def main():
     )
     parser.add_argument(
         "--method",
-        choices=["merged_4bit", "merged_16bit"],
-        default="merged_4bit",
-        help="Merge method: merged_4bit (smaller, ~1.5GB) or merged_16bit (quality, ~2.5GB)",
+        choices=["merged_4bit_forced", "merged_16bit"],
+        default="merged_4bit_forced",
+        help="Merge method: merged_4bit_forced (smaller, ~1.5GB) or merged_16bit (quality, ~2.5GB)",
     )
     args = parser.parse_args()
 
