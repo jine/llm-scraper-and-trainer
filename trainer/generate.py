@@ -49,6 +49,9 @@ def main():
     )
     tokenizer = AutoTokenizer.from_pretrained(args.base_model)
 
+    # Remove default max_length to avoid warning with max_new_tokens
+    tokenizer.model_max_length = args.max_tokens
+
     print(f"Loading adapter: {args.model}")
     model = PeftModel.from_pretrained(model, args.model)
 
@@ -72,6 +75,7 @@ def main():
             input_ids=input_ids,
             attention_mask=attention_mask,
             max_new_tokens=args.max_tokens,
+            max_length=None,
             temperature=args.temperature,
             top_p=args.top_p,
             do_sample=True,
