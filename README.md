@@ -8,7 +8,7 @@ This project consists of two main components:
 
 1. **Web Scraper** (`scraper/`) - A concurrent web scraper that crawls websites, extracts title/text/categories, and outputs JSONL files for LLM training.
 
-2. **LLM Trainer** (`trainer/`) - Fine-tunes Llama-3.1-8B using QLoRA on scraped Swedish text data to generate new content in learned styles.
+2. **LLM Trainer** (`trainer/`) - Fine-tunes Llama-3.2-1B using QLoRA on scraped Swedish text data to generate new content in learned styles.
 
 ## Architecture
 
@@ -16,7 +16,7 @@ This project consists of two main components:
 scraper/           →  JSONL data  →  trainer/
   scraper.py           (pages)         prepare_data.py
   Concurrent crawler   dataset.jsonl   train.py (QLoRA)
-  JSONL output         Categories     generate.py
+  JSONL output         Categories     merge.py, generate.py
 ```
 
 ## Features
@@ -33,6 +33,7 @@ scraper/           →  JSONL data  →  trainer/
 - Category-conditioned text generation
 - Swedish text focus
 - Small, shareable LoRA adapters
+- Fast inference with merged models
 - Uses Unsloth for 2x training speedup
 
 ## Tech Stack
@@ -64,10 +65,20 @@ python prepare_data.py --input ../scraper/output/www.example.com/pages/ --output
 python train.py --data data/train.jsonl --output output/adapter
 ```
 
-### 4. Generate
+### 4. Merge (optional)
 
 ```bash
-python generate.py --adapter output/adapter --category "Category" --title "Optional Title"
+python merge.py
+```
+
+### 5. Generate
+
+```bash
+# Using merged model (recommended)
+python generate.py --model output/merged_model --category "Category"
+
+# Or using adapter directly
+python generate.py --model output/adapter --mode adapter --category "Category"
 ```
 
 ## Scraper Options
