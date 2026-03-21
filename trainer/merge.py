@@ -6,6 +6,7 @@ import os
 
 from dotenv import load_dotenv
 from unsloth import FastLanguageModel
+from peft import PeftModel
 import torch
 
 load_dotenv()
@@ -69,7 +70,7 @@ def main():
     print(f"After base model: Free={free / 1024**3:.2f}GB")
 
     print(f"\nLoading adapter: {args.adapter}")
-    model = FastLanguageModel.from_pretrained(model, args.adapter)
+    model = PeftModel.from_pretrained(model, args.adapter)
 
     free, total = torch.cuda.mem_get_info(0)
     print(f"After adapter: Free={free / 1024**3:.2f}GB")
