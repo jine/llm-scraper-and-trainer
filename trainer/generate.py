@@ -35,10 +35,25 @@ def main():
         help="Max tokens to generate (default: 512)",
     )
     parser.add_argument(
-        "--temperature", type=float, default=0.7, help="Temperature (default: 0.7)"
+        "--temperature", type=float, default=0.8, help="Temperature (default: 0.8)"
     )
     parser.add_argument(
         "--top-p", type=float, default=0.9, help="Top-p sampling (default: 0.9)"
+    )
+    parser.add_argument(
+        "--top-k", type=int, default=50, help="Top-k sampling (default: 50)"
+    )
+    parser.add_argument(
+        "--repetition-penalty",
+        type=float,
+        default=1.2,
+        help="Repetition penalty (default: 1.2, 1.0 = disabled)",
+    )
+    parser.add_argument(
+        "--no-repeat-ngram",
+        type=int,
+        default=3,
+        help="No-repeat ngram size (default: 3, 0 = disabled)",
     )
     args = parser.parse_args()
 
@@ -78,6 +93,9 @@ def main():
             max_length=None,
             temperature=args.temperature,
             top_p=args.top_p,
+            top_k=args.top_k,
+            repetition_penalty=args.repetition_penalty,
+            no_repeat_ngram_size=args.no_repeat_ngram,
             do_sample=True,
             pad_token_id=tokenizer.pad_token_id,
         )
