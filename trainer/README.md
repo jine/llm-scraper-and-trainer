@@ -84,8 +84,11 @@ Options:
 | `--category` | (required) | Category to generate for |
 | `--title` | | Optional title prompt |
 | `--max-tokens` | 512 | Max tokens to generate |
-| `--temperature` | 0.7 | Sampling temperature |
+| `--temperature` | 0.8 | Sampling temperature |
 | `--top-p` | 0.9 | Top-p sampling |
+| `--top-k` | 50 | Top-k sampling |
+| `--repetition-penalty` | 1.2 | Repetition penalty (1.0 = disabled) |
+| `--no-repeat-ngram` | 3 | No-repeat ngram size (0 = disabled) |
 
 ## Notes
 
