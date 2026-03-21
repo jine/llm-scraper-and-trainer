@@ -3,6 +3,7 @@
 
 import argparse
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 from unsloth import FastLanguageModel
@@ -13,6 +14,9 @@ load_dotenv()
 
 
 def main():
+    # Resolve paths relative to this script's directory
+    script_dir = Path(__file__).parent
+
     parser = argparse.ArgumentParser(description="Merge LoRA adapter with base model")
     parser.add_argument(
         "--base-model",
@@ -21,13 +25,13 @@ def main():
     )
     parser.add_argument(
         "--adapter",
-        default="trainer/output/adapter",
-        help="Path to LoRA adapter (default: trainer/output/adapter)",
+        default=str(script_dir / "output" / "adapter"),
+        help="Path to LoRA adapter",
     )
     parser.add_argument(
         "--output",
-        default="trainer/output/merged_model",
-        help="Output directory for merged model (default: trainer/output/merged_model)",
+        default=str(script_dir / "output" / "merged_model"),
+        help="Output directory for merged model",
     )
     parser.add_argument(
         "--method",
