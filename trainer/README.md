@@ -68,49 +68,29 @@ Options:
 | `--lora-r` | 8 | LoRA rank |
 | `--lora-alpha` | 16 | LoRA alpha |
 
-### 3. Merge
-
-Merge the trained adapter with the base model for faster inference:
-
-```bash
-python merge.py
-```
-
-Options:
-| Flag | Default | Description |
-|------|---------|-------------|
-| `--method` | merged_16bit | Merge method: `merged_16bit` (~2.5GB) or `merged_4bit_forced` (~1.5GB) |
-| `--adapter` | output/adapter | Path to trained adapter |
-| `--output` | output/merged_model | Output directory |
-
-### 4. Generate
+### 3. Generate
 
 Generate text using the fine-tuned model:
 
 ```bash
-# Using merged model (recommended)
-python generate.py --model output/merged_model --category "Noveller"
-
-# Using adapter (loads base model separately)
-python generate.py --model output/adapter --mode adapter --category "Noveller"
+python generate.py --model output/adapter --category "Noveller" --title "En kort berättelse"
 ```
 
 Options:
 | Flag | Default | Description |
 |------|---------|-------------|
-| `--model` | output/merged_model | Path to merged model or adapter |
-| `--mode` | merged | Load as `merged` or `adapter` |
-| `--base-model` | unsloth/Llama-3.2-1B-Instruct-bnb-4bit | Base model (for adapter mode) |
+| `--base-model` | unsloth/Llama-3.2-1B-Instruct-bnb-4bit | Base model name |
+| `--model` | output/adapter | Path to LoRA adapter |
 | `--category` | (required) | Category to generate for |
 | `--title` | | Optional title prompt |
 | `--max-tokens` | 512 | Max tokens to generate |
-| `--temperature` | 0.8 | Sampling temperature |
+| `--temperature` | 0.7 | Sampling temperature |
 | `--top-p` | 0.9 | Top-p sampling |
 
 ## Notes
 
 - Training on ~12k examples takes ~1h 45min on RTX 3060 Ti (~2 it/s)
 - Adapter is small (~22MB) — easy to share or swap
-- Merged model is ~1.5GB with 4bit quantization, ~2.5GB at 16bit
 - Llama-3.2-1B with 4-bit quantization fits in ~2-3GB VRAM for inference
 - Uses Unsloth for 2x training speedup and efficient memory usage
+- Inference uses transformers directly (Unsloth fast inference has compatibility issues with adapters)
