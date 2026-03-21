@@ -79,7 +79,7 @@ python merge.py
 Options:
 | Flag | Default | Description |
 |------|---------|-------------|
-| `--method` | merged_4bit | Merge method: `merged_4bit` (~1.5GB) or `merged_16bit` (~2.5GB) |
+| `--method` | merged_16bit | Merge method: `merged_16bit` (~2.5GB) or `merged_4bit_forced` (~1.5GB) |
 | `--adapter` | output/adapter | Path to trained adapter |
 | `--output` | output/merged_model | Output directory |
 
